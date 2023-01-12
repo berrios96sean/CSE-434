@@ -18,4 +18,10 @@
         - Subnet 
         - Host 
     Routers and Host use an extended network prefix -> this is what identifies the host #'s 
-    
+
+// CIDR Classless interdomain routing 
+    Uses a slash '/' notation to define the net prefix 
+
+// No Subnetting
+    Diagrams in the powerpoint give a good representation of what no Subnetting looks like  
+
