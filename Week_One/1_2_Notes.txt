@@ -13,3 +13,9 @@
     will use these in the cloud lab 
 
 // Subnetting 
+    IP addresses us a 3 layer heirarchy 
+        - Network
+        - Subnet 
+        - Host 
+    Routers and Host use an extended network prefix -> this is what identifies the host #'s 
+    
