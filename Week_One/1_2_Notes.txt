@@ -1,0 +1,4 @@
+// Network Mask 
+Network mask defines what the predefined specifications for the Network Address and the host Address
+for example ffff0000 defines the first 16 bits as the Network address
+
