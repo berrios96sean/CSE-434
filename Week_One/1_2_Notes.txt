@@ -5,4 +5,11 @@
     CIDR notation is a shortform notation to define a network mask 
         ex. 128.143.137.144/16 
 
+// Host Address 
+    all zeros are not a valid host number -> IP address 
+    all ones are not a valid host number -> Broadcast address
 
+// Test/Exp addresses 
+    will use these in the cloud lab 
+
+// Subnetting 
