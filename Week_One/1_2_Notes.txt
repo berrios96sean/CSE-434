@@ -25,3 +25,8 @@
 // No Subnetting
     Diagrams in the powerpoint give a good representation of what no Subnetting looks like  
 
+// Lab 
+    BYENG ping IP address
+    CloudLab design subnet to allow a certain number of hosts 
+
+    
