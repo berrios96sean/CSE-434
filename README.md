@@ -7,3 +7,6 @@
  
 ## Modules 
 [Week One](https://github.com/berrios96sean/CSE-434/tree/main/Week_One)
+
+## All Lecture Notes 
+* []()<br/>
