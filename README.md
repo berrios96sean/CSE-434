@@ -10,4 +10,4 @@
 
 ## All Lecture Notes 
 * [Lecture One](https://github.com/berrios96sean/CSE-434/blob/main/Week_One/1_1_Notes.txt)<br/>
-* [Lecture Two)(https://github.com/berrios96sean/CSE-434/blob/main/Week_One/1_2_Notes.txt)<br/>
+* [Lecture Two](https://github.com/berrios96sean/CSE-434/blob/main/Week_One/1_2_Notes.txt)<br/>
