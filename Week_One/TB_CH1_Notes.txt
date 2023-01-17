@@ -21,3 +21,12 @@ today’s Internet are routers and link-layer switches.
 The sequence
 of communication links and packet switches traversed by a packet from the sending end system to the receiving end system is known as a route or path through
 the network
+
+End systems, packet switches, and other pieces of the Internet run protocols that
+control the sending and receiving of information within the Internet. The Transmission
+Control Protocol (TCP) and the Internet Protocol (IP) are two of the most important protocols in the Internet. 
+
+End systems attached to the Internet provide a socket interface that specifies how a program running on one end system asks the Internet infrastructure to
+deliver data to a specific destination program running on another end system.
+
+// 1.2
