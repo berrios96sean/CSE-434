@@ -30,3 +30,26 @@ End systems attached to the Internet provide a socket interface that specifies h
 deliver data to a specific destination program running on another end system.
 
 // 1.2
+
+Edges are end systems or hosts, which can also be thought of as clients and servers 
+
+Home access network:
+
+    Today, the two most prevalent types of broadband residential access are
+    digital subscriber line (DSL) and cable.
+
+    each customer’s DSL modem uses the existing
+    telephone line exchange data with a digital subscriber line access multiplexer
+    (DSLAM) located in the telco’s local central office (CO).
+
+    The residential telephone line carries both data and traditional telephone signals
+    simultaneously, which are encoded at different frequencies:
+    • A high-speed downstream channel, in the 50 kHz to 1 MHz band
+    • A medium-speed upstream channel, in the 4 kHz to 50 kHz band
+    • An ordinary two-way telephone channel, in the 0 to 4 kHz band
+
+While DSL makes use of the telco’s existing local telephone infrastructure,
+cable Internet access makes use of the cable television company’s existing cable
+television infrastructure. 
+
+See section 1.2 for review of info for cable internet 
