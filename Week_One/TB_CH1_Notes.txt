@@ -3,3 +3,12 @@
 The internet is composed of networks that interconnects billions of computing devices. 
 There can be a variety of devices that can act as endpoints, most notably Linux devices 
 are what the majority of endpoints are using. 
+
+End systems are connected via communication links and packet switches. 
+Different links transmit data at different speeds -- transmission rate. measure in bits/sec 
+
+When one end system has data to send to another end system, the sending end system
+segments the data and adds header bytes to each segment. The resulting packages
+of information, known as packets in the jargon of computer networks, are then sent
+through the network to the destination end system, where they are reassembled into
+the original data.
