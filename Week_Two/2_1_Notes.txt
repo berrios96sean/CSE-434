@@ -6,4 +6,4 @@
 need 70 hosts 
 
 routing forwarding table, uses a header on the packet that will determine where the packet will get 
-re routed too. 
+re routed too. uses a shortest path algorithm to re route packets in the network 
