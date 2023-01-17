@@ -8,3 +8,6 @@ need 70 hosts
 routing forwarding table, uses a header on the packet that will determine where the packet will get 
         
 re routed too. uses a shortest path algorithm to re route packets in the network 
+
+packet switching store and forward 
+ - entire packet must arrive at router before it can be transmitted on next link 
