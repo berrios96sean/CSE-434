@@ -12,3 +12,12 @@ segments the data and adds header bytes to each segment. The resulting packages
 of information, known as packets in the jargon of computer networks, are then sent
 through the network to the destination end system, where they are reassembled into
 the original data.
+
+A packet switch takes a packet arriving on one of its incoming communication
+links and forwards that packet on one of its outgoing communication links. Packet
+switches come in many shapes and flavors, but the two most prominent types in
+today’s Internet are routers and link-layer switches. 
+
+The sequence
+of communication links and packet switches traversed by a packet from the sending end system to the receiving end system is known as a route or path through
+the network
