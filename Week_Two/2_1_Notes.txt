@@ -4,3 +4,6 @@
 11111111.11111111.11111111.10000000
 255.255.255.128
 need 70 hosts 
+
+routing forwarding table, uses a header on the packet that will determine where the packet will get 
+re routed too. 
