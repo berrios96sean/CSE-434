@@ -62,3 +62,5 @@ d_trans = L/R
     network -- adds its own header keeping header from transport layer passes a 'datagram' passes down to link layer 
     link -- adds its own header keeping last two from transport and network makes a 'frame' and passes it to the physical layer. 
     physical -- also can be called destination 
+
+    ** Each layer has different responsibilies, each header has the information of what each layer is responsible for. 
