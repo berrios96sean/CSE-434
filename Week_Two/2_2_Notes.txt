@@ -1,3 +1,9 @@
 Quiz 1 will be in class on Tuesday Jan 24th. 
 
 review prior to class 
+
+packet delay: Four sources 
+- transmission 
+- nodal processing 
+- queuing 
+- propogation 
