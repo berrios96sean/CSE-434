@@ -13,5 +13,15 @@ d_nodal = d_proc + d_queue + d_trans + d_prop
     NOTE: Make sure to always convert bytes -> bits, KM -> Meters 
         always ensure units match before doing any calculations. 
 
+d = lenght of physical link 
+s = prop speed 
 d_prop = d/s 
 d_trans = L/R 
+
+// Throughput 
+    - rate bits/time unit at which bits are being sent from sender to receiver 
+    * instantaneous: rate at given point in time 
+    * average: rate over longer period of time 
+
+** Visual Representation on introduction 1-56 ppt 
+
