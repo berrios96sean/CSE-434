@@ -57,5 +57,8 @@ d_trans = L/R
  * After todays lecture read this sections to get familiar with next HW problems 
 
  - Soure 
-    application -- make a message can add a header or footer on the message but is optional 
-    transport -- adds a header to message 
+    application -- make a message can add a header or footer on the message but is optional passes to transport layer
+    transport -- adds a header to message received from application passes to network layer 
+    network -- adds its own header keeping header from transport layer passes a 'datagram' passes down to link layer 
+    link -- adds its own header keeping last two from transport and network makes a 'frame' and passes it to the physical layer. 
+    physical -- also can be called destination 
