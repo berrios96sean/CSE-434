@@ -7,3 +7,11 @@ packet delay: Four sources
 - nodal processing 
 - queuing 
 - propogation 
+
+d_nodal = d_proc + d_queue + d_trans + d_prop 
+
+    NOTE: Make sure to always convert bytes -> bits, KM -> Meters 
+        always ensure units match before doing any calculations. 
+
+d_prop = d/s 
+d_trans = L/R 
