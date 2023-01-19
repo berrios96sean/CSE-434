@@ -45,6 +45,7 @@ d_trans = L/R
  ppt introduction 1-33
 
 // internet (tcp/ip) protocol stack 
+ *** Sorted here from top to bottom ***
  - application: supporting network applications -- imap,smtp,http
  - transport: process-process data transfer -- tcp,udp
  - network: routing of datagrams form source to destination -- ip,routing protocols 
