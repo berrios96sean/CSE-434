@@ -64,11 +64,11 @@ d_trans = L/R
     physical -- 
 
  - switch 
-    link   
+    link -- uses mac address to make forwarding decisions  
     physical 
 
  - router 
-    network
+    network -- uses ip address to make forwarding decisions
     link
     physical 
 
