@@ -25,3 +25,8 @@ d_trans = L/R
 
 ** Visual Representation on introduction 1-56 ppt 
 
+//queueing delay, loss 
+ ppt introduction 1-28 
+ - if arrivale rate (bps) to link exceeds transmission rate (bps) of link for a period ot time 
+    * packets will queue waiting to be transmitted on output link 
+    * packets can be dropped (lost) if memory (buffer) in router fills up
