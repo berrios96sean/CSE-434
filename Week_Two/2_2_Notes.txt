@@ -43,3 +43,10 @@ d_trans = L/R
 
 // packet switching
  ppt introduction 1-33
+
+// internet (tcp/ip) protocol stack 
+ - application: supporting network applications -- imap,smtp,http
+ - transport: process-process data transfer -- tcp,udp
+ - network: routing of datagrams form source to destination -- ip,routing protocols 
+ - link: data transfer between neighboring network elements -- ethernet, 802.11 (wi-fi), ppp 
+ - physical: bits 'on the wire' 
