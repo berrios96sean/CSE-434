@@ -34,3 +34,12 @@ d_trans = L/R
 // alternative to packet switching is circuit switching 
  end to end resources allocated to reserved for 'call' between source and destination 
  ** Visual representation in ppt introduction 1-30 
+
+// packet switching vs circuit switching 
+ ppt introduction 1-31 
+
+// circuit switching 
+ ppt introduction 1-32
+
+// packet switching
+ ppt introduction 1-33
