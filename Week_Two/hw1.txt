@@ -21,3 +21,19 @@ HW 1.17 BOTTLENECK LINK
 For the bottleneck link it is the smallest of the two links in bps
 and for the dtrans (transmission delay) the formula for this example is 
 (2*(L*8)/(Mbps) 
+
+HW 1.18 END TO END 
+Segment 1:
+  Transmission Delay = 1.1104
+  Propagation Delay = 36.644
+Segment 2:
+  Transmission Delay = 1.1104
+  Propagation Delay = 10.232
+Segment 3:
+  Transmission Delay = 1.1104
+  Propagation Delay = 27.444
+  
+ Plus dProc of 9 mses at each forwarding device 
+ 
+ Total delay = 96msec
+  
