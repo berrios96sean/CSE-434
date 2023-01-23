@@ -12,6 +12,12 @@ Broadcast -- 77.160.127.255
 Smallest usable -- 77.160.127.0
 Largest usable -- 77.160.127.254
 
+// HW 1.2 Prefix for an address Range 
+Suppose a subnet includes the address range from 192.168.32.0 (network address) to 192.168.63.255 (broadcast address).
+
+What is the prefix length? 19
+What is the corresponding subnet mask? 255.255.224.0
+
 // HW 1.17 BOTTLENECK LINK 
 For the bottleneck link it is the smallest of the two links in bps
 and for the dtrans (transmission delay) the formula for this example is
