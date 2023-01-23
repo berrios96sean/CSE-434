@@ -4,8 +4,13 @@ convert dotted decimal 77.160.6.221 and subnetmask 255.255.128.0 to dotted binar
 ip --                01001101.10100000.00000110.11011101
 netmask --           11111111.11111111.10000000.00000000
 network address --   01001101.10100000.00000000.00000000
-broadcast address -- 01001101.10100000.11111111.11111111
+broadcast address -- 01001101.10100000.01111111.11111111
 Part 2. 
+convert back to dotted decimal 
+Network -- 77.160.0.0
+Broadcast -- 77.160.127.255
+Smallest usable -- 77.160.127.0
+Largest usable -- 77.160.127.254
 
 // HW 1.17 BOTTLENECK LINK 
 For the bottleneck link it is the smallest of the two links in bps
