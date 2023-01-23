@@ -16,3 +16,8 @@ subnet q
 
 32
 00100000
+
+HW 1.17 BOTTLENECK LINK 
+For the bottleneck link it is the smallest of the two links in bps
+and for the dtrans (transmission delay) the formula for this example is 
+(2*(L*8)/(Mbps) 
