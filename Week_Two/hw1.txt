@@ -1,29 +1,19 @@
-subnet q
+// HW 1.1 Binary Math for IPv4 Addressing 
+Part 1. 
+convert dotted decimal 77.160.6.221 and subnetmask 255.255.128.0 to dotted binary 
+ip --                01001101.10100000.00000110.11011101
+netmask --           11111111.11111111.10000000.00000000
+network address --   01001101.10100000.00000000.00000000
+broadcast address -- 01001101.10100000.11111111.11111111
+Part 2. 
 
-255.255.255.128
-11111111.11111111.11111111.10000000
-
-255.255.255.224
-11111111.11111111.11111111.11100000
-
-255.255.255.192
-11111111.11111111.11111111.11000000
-
-// last 8 bits of ip 
-
-64 
-10000000
-
-32
-00100000
-
-HW 1.17 BOTTLENECK LINK 
+// HW 1.17 BOTTLENECK LINK 
 For the bottleneck link it is the smallest of the two links in bps
 and for the dtrans (transmission delay) the formula for this example is
 this is 2* because this is two-hop -- at least i think this is why 
 (2*(L*8)/(Mbps) 
 
-HW 1.18 END TO END 
+// HW 1.18 END TO END 
 Segment 1:
   Transmission Delay = 1.1104
   Propagation Delay = 36.644
