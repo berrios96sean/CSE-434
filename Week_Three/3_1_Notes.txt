@@ -1,0 +1,8 @@
+// In class example 
+sudo ip route add NERADDR/PREFIX via GW dev iface 
+
+Socket -- think of as a file. 
+sends/ receives messages to/from its socket 
+sending process shoves message out the door 
+sending process relies on transport infrastructure on other side of door to deliver message to socket at receiving process
+two sockets involved one on each side 
