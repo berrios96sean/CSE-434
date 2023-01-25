@@ -13,5 +13,5 @@
 * [Lecture Two](https://github.com/berrios96sean/CSE-434/blob/main/Week_One/1_2_Notes.txt)<br/>
 * [Lecture Three](https://github.com/berrios96sean/CSE-434/blob/main/Week_Two/2_1_Notes.txt)<br/>
 * [Lecture Four](https://github.com/berrios96sean/CSE-434/blob/main/Week_Two/2_2_Notes.txt)<br/>
-* [Lecture Five]()<br/>
+* [Lecture Five](https://github.com/berrios96sean/CSE-434/blob/main/Week_Three/3_1_Notes.txt)<br/>
 * [Lecture Six]()<br/>
