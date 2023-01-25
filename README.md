@@ -7,7 +7,7 @@
  
 ## Modules 
 [Week One](https://github.com/berrios96sean/CSE-434/tree/main/Week_One)<br/>
-[Week Two]()<br/>
+[Week Two](https://github.com/berrios96sean/CSE-434/tree/main/Week_Two)<br/>
 [Week Three]()<br/>
 
 ## All Lecture Notes 
