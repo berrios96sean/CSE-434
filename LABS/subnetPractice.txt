@@ -1,0 +1,6 @@
+Your challenge is to design subnets for three LANs, with the following design constraints:
+
+The available IP address space is the range 10.1.105.0-10.1.105.255.
+LAN A must be able to support at least 41 hosts.
+LAN B must be able to support at least 88 hosts.
+LAN C must be able to support at least 19 hosts.
