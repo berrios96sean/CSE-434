@@ -17,3 +17,5 @@ LAN C must be able to support at least 19 hosts.
 
 // Solution was correct however I put the solutions in the incorrect place
    need to ensure that the bits line up in the submission box
+
+// Subnet desing problem for labone 
