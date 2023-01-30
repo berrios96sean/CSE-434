@@ -19,3 +19,10 @@ LAN C must be able to support at least 19 hosts.
    need to ensure that the bits line up in the submission box
 
 // Subnet desing problem for labone 
+
+Consider the following network of hosts (orange) and routers (green). Your challenge is to design subnets for three LANs, with the following design constraints:
+
+The available IP address space is the range 10.1.49.0-10.1.49.127.
+LAN A must be able to support at least 21 hosts.
+LAN B must be able to support at least 9 hosts.
+LAN C must be able to support at least 56 hosts.
