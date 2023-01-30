@@ -14,3 +14,6 @@ LAN C must be able to support at least 19 hosts.
 00001010.00000001.01101001.10000000
 10.1.105.192 - 10.1.105.223 -- 5
 00001010.00000001.01101001.11000000
+
+// Solution was correct however I put the solutions in the incorrect place
+   need to ensure that the bits line up in the submission box
