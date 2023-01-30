@@ -61,3 +61,6 @@ LAN C must be able to support at least 56 hosts.
 One thing to take note of is that i need to take into consideration that 
 when designing the subnets only make the mask as big as necessary which for 
 9 hosts i only need 4 zeros at the end of the mask. 
+
+// Finished Subnet design 
+    - will need to review this later to better understand what is going on 
