@@ -4,3 +4,4 @@ Topics:
     3. File distribution time: P2P
     4. Client Server vs P2P
     5. Going over general servers (will only us 3,4,5)
+        - Showed an example of an echo server 
