@@ -1,2 +1,4 @@
 Topics: 
     1. Peer to peer architecture 
+    2. File distribution time: Client - Server 
+    3. File distribution time: P2P
