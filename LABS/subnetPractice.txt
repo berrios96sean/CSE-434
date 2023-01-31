@@ -1,0 +1,66 @@
+Your challenge is to design subnets for three LANs, with the following design constraints:
+
+The available IP address space is the range 10.1.105.0-10.1.105.255.
+LAN A must be able to support at least 41 hosts.
+LAN B must be able to support at least 88 hosts.
+LAN C must be able to support at least 19 hosts.
+
+
+10.1.105.0-10.1.105.255
+
+10.1.105.0 - 10.1.105.127 -- 7
+00001010.00000001.01101001.00000000
+10.1.105.128 - 10.1.105.191 -- 6
+00001010.00000001.01101001.10000000
+10.1.105.192 - 10.1.105.223 -- 5
+00001010.00000001.01101001.11000000
+
+// Solution was correct however I put the solutions in the incorrect place
+   need to ensure that the bits line up in the submission box
+
+// Subnet desing problem for labone 
+
+Consider the following network of hosts (orange) and routers (green). Your challenge is to design subnets for three LANs, with the following design constraints:
+
+The available IP address space is the range 10.1.49.0-10.1.49.127.
+LAN A must be able to support at least 21 hosts.
+LAN B must be able to support at least 9 hosts.
+LAN C must be able to support at least 56 hosts.
+
+10.1.49.0 - 10.1.49.127
+00001010.00000001.00110001.
+
+10.1.49.0 - 10.1.49.63 -- 56 hosts 
+00001010.00000001.00110001.00000000
+10.1.49.64 - 10.1.49.95 -- 32 hosts 
+00001010.00000001.00110001.01000000
+10.1.49.96 - 10.1.49.111 -- 16 hosts 
+00001010.00000001.00110001.01100000
+
+11111111.11111111.11111111.10000000
+00001010.00000001.00110001.00000000
+------------------------------------
+00001010.00000001.00110001.00000000
+
+11111111.11111111.11111111.10000000
+00001010.00000001.00110001.01000000
+-----------------------------------
+00001010.00000001.00110001.00
+
+11111111.11111111.11111111.10000000
+00001010.00000001.00110001.01100000
+-----------------------------------
+
+11111111.11111111.11111111.11100000
+00001010.00000001.00110001.01100000
+-----------------------------------
+00001010.00000001.00110001.01100000
+00000000.00000000.00000000.00011111
+00001010.00000001.00110001.01111111
+
+One thing to take note of is that i need to take into consideration that 
+when designing the subnets only make the mask as big as necessary which for 
+9 hosts i only need 4 zeros at the end of the mask. 
+
+// Finished Subnet design 
+    - will need to review this later to better understand what is going on 
