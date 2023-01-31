@@ -5,3 +5,5 @@ Topics:
     4. Client Server vs P2P
     5. Going over general servers (will only us 3,4,5)
         - Showed an example of an echo server 
+        - will share code of c code for the echo client/server 
+        - will need to look at it and understand process of it for future socket project 
