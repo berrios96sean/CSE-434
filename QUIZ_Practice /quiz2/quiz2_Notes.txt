@@ -6,3 +6,12 @@
 3. 802.11 -> 760B + 24B + 4B = 788B
 
 The hardest one will definitely be that end-end-delay calculation 
+
+// HW1.18
+
+L/R for all three = 2.826 // dont forget to add it three times 
+
+prop 1: D/S = 38.512 
+prop 2: D/S = 22.268
+prop 3: D/S = 19.272
+dproc = 6 + 6 = 12 
