@@ -9,7 +9,7 @@
 [Week One](https://github.com/berrios96sean/CSE-434/tree/main/Week_One)<br/>
 [Week Two](https://github.com/berrios96sean/CSE-434/tree/main/Week_Two)<br/>
 [Week Three](https://github.com/berrios96sean/CSE-434/tree/main/Week_Three)<br/>
-[Week Three](https://github.com/berrios96sean/CSE-434/tree/main/Week_Four)<br/>
+[Week Four](https://github.com/berrios96sean/CSE-434/tree/main/Week_Four)<br/>
 
 ## All Lecture Notes 
 * [Lecture One](https://github.com/berrios96sean/CSE-434/blob/main/Week_One/1_1_Notes.txt)<br/>
