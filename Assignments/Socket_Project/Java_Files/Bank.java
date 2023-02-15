@@ -31,6 +31,13 @@ public class Bank {
                 if (command.equals("open"))
                 {
                     System.out.println("OPEN");
+                    String customer = parsedMessage[1];
+                    double balance = Double.parseDouble(parsedMessage[2]);
+                    String ip4 = parsedMessage[3];
+                    int porta = Integer.parseInt(parsedMessage[4]);
+                    int portb = Integer.parseInt(parsedMessage[5]);
+                    System.out.println(open(customer,balance,ip4,porta,portb));
+
                 }
                 if (command.equals("new-cohort"))
                 {
@@ -54,4 +61,24 @@ public class Bank {
             e.printStackTrace();
         }
     }
+
+    public static String open(String customerName, double balance, String ipv4Address, int porta, int portb) {
+        
+        if (customers.containsKey(customerName)) {
+            return "FAILURE"; 
+        }
+    
+        // create individual map for new customer 
+        Map<String, Object> customer = new HashMap<>();
+        customer.put("balance", balance);
+        customer.put("ipv4_address", ipv4Address);
+        customer.put("portb", porta);
+        customer.put("portp", portb);
+
+        // add new customer to the customers map
+        customers.put(customerName, customer);
+    
+        return "SUCCESS";
+    }
+    
 }
