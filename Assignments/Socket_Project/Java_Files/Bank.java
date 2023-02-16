@@ -51,8 +51,13 @@ public class Bank {
                 {
                     System.out.println("EXIT");
                 }
-                // Stop listening when a message is received
-                listening = false;
+                // This command will be to close the bank service with a call from the customer 'close-bank'
+                if (command.equals("close-bank"))
+                {
+                    listening = false;
+                    break;
+                }
+                
             }
             socket.close();
         }
@@ -79,6 +84,15 @@ public class Bank {
         customers.put(customerName, customer);
     
         return "SUCCESS";
+    }
+
+    // This function is used for testing so that I can verify the contents of the hashmap
+    public static void printMap()
+    {
+        for (String key : customers.keySet())
+        {
+            System.out.println(key + " "+customers.get(key));
+        }
     }
     
 }
