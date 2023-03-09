@@ -258,7 +258,11 @@ public class Customer {
             if (command.equals("transfer "))
             {
                 System.out.println("placeholder for transfer");
-                transfer(parsedMessage[1]);
+                double amount = Double.parseDouble(parsedMessage[1]);
+                String customer = parsedMessage[2];
+                int label = Integer.parseInt(parsedMessage[3]);
+
+                transfer(customer,amount,label);
                 // create a local channel with the receiver and store the old cohort locally with the label ID
                 // update the cohort info with the new balances locally 
                 // decrement local balance 
@@ -304,7 +308,7 @@ public class Customer {
             return false;
     }
     
-    public static void transfer(String customer)
+    public static void transfer(String customer, double amount, int label)
     {
         // get the Map object for customer transferring to 
         Map<String,Object> receiver = new HashMap<>(); 
@@ -330,7 +334,15 @@ public class Customer {
         int port = (int) receiver.get("portb");
         System.out.println(ipString);
         System.out.println(port);
-        sendMessage(ipString, port, "Hello");
+
+        // set new balance locally 
+        setBalance(getBalance()-amount);
+
+        // create channel to store old cohort info 
+        channel ch = new channel(getCustName(),cohort);
+        sentChannels.put(customer+label, ch);
+        
+        sendMessage(ipString, port, "transfer "+amount+" "+label);
     }
 
     /***
@@ -513,11 +525,13 @@ public class Customer {
      * print the hashmap of the cohort 
      */
     // Print contents of the hashmap, for this case the cohort result, 
-    public static void printMap()
+    public static void printMap(Map<String,channel> map)
     {
-        for (String key : hMap.keySet())
+        for (String key : map.keySet())
         {
-            System.out.println(key + " "+hMap.get(key));
+            channel ch = map.get(key);
+            System.out.println(key + " ");
+            ch.printCohort();
         }
     }
 
