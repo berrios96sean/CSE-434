@@ -31,7 +31,15 @@ public class Customer {
 
     // HashMap to track cohort info 
     public static Map<String,Object> hMap = new HashMap<>();
+
+    // Arraylist to store Hashmaps of customers in the cohort 
     public static ArrayList<Map<String,Object>> cohort = new ArrayList<>(); 
+
+    // Hasmap to store channel connections received 
+    public static Map<String,channel> receivedChannels = new HashMap<>(); 
+
+    // Hashmap to store channell connections sent 
+    public static Map<String,channel> sentChannels = new HashMap<>(); 
 
 //#endregion
 
@@ -266,6 +274,7 @@ public class Customer {
                 {
                     String request = listen(customerIP, customerPort);
                     System.out.println(request);
+
                     //sendMessage(bankIpString, bankPortNum,message);
                 }
                 catch (Exception e)
