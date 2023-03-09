@@ -266,7 +266,6 @@ public class Customer {
                 {
                     String request = listen(customerIP, customerPort);
                     System.out.println(request);
-
                     //sendMessage(bankIpString, bankPortNum,message);
                 }
                 catch (Exception e)
@@ -309,15 +308,20 @@ public class Customer {
             }
         }
 
-        if (receiver == null)
+        // This may be redundant but using for error checking to ensure that the 
+        // map is not empty before doing operations on it. 
+        if (receiver.get("name") == null)
         {
             System.out.println("Receiver not found or not set");
+            return; 
         }
 
-        
-        String ip = (String) receiver.get("ipv4_Address");
-        System.out.println(ip);
-        
+        // Get 
+        String ipString = (String) receiver.get("ipv4_Address");
+        int port = (int) receiver.get("portb");
+        System.out.println(ipString);
+        System.out.println(port);
+        sendMessage(ipString, port, "Hello");
     }
 
     /***
