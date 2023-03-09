@@ -1,18 +1,23 @@
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random; 
 
 public class Bank {
     public static Map<String,Object> customers = new HashMap<>(); 
+    public static List<cohort> cohorts = new ArrayList<>(); 
+
     public static void main(String[] args) 
     {
         try 
         {
             // Set up a UDP socket on a specific IP address and port
-            InetAddress address = InetAddress.getByName("127.0.0.1"); // replace with desired IP address
-            int port = 12345; // replace with desired port number
+            InetAddress address = InetAddress.getByName("10.120.70.105"); // replace with desired IP address
+            int port = 45000; // replace with desired port number
             DatagramSocket socket = new DatagramSocket(port, address);
             
             // Listen for incoming messages
@@ -93,6 +98,12 @@ public class Bank {
         {
             System.out.println(key + " "+customers.get(key));
         }
+    }
+
+    // This is a class that I am using inside of the Bank class to create Cohorts 
+    private static class cohort{
+
+        private List<Customer> customers; 
     }
     
 }
