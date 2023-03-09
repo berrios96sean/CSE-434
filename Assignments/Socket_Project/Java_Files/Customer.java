@@ -808,12 +808,122 @@ class checkpoint
 
 class channel
 {
+
+//#region Public variables 
+
+    // use this to hold the old cohort 
+    public static ArrayList<Map<String,Object>> cohort = new ArrayList<>(); 
+    // Label initialized to zero, no transfer have taken place 
+    public static int label = 0; 
+    // This will only be initialized through a setter and getter
+    // using receiverID for local operations where local customer was the sender 
+    public static String receiverID;
+    public static String senderID; 
+
+//#endregion
+
+//#region Constructors 
+
     /***
-     * Constructor for creating a channel 
+     * Default Constructor for creating a channel, this may or may not become useful. 
      * Create a new channel only if a channel has not been established
      */
     public channel()
     {
 
     }
+
+    /**
+     * Initializes the information for the channel. The Label will be the ID for the transaction.
+     * 
+     * @param senderID
+     * @param cohort
+     * @param label
+     */
+    public channel(String senderId, ArrayList<Map<String,Object>> Cohort)
+    {
+        senderID = senderId; 
+        cohort = Cohort; 
+    }
+
+//#endregion
+
+
+//#region Helper Methods
+
+    /***
+     * print the cohort 
+     */
+    public static void printCohort()
+    {
+        for (Map<String,Object> lItem : cohort)
+        {
+            System.out.println(lItem.toString());
+        }
+    }
+
+//#endregion
+
+//#region Setter Methods
+
+    /**
+     * Set the label for the channel 
+     * @param newLabel
+     */
+    public static void setLabel(int newLabel)
+    {
+        label = newLabel; 
+    }
+
+    /**
+     * if local user was sender set the receiver ID. 
+     * @param id
+     */
+    public static void setReceiverID(String id)
+    {
+        receiverID = id; 
+    }
+
+//#endregion
+
+//#region Getter Methods 
+
+    /**
+     * Get the label for the channel. 
+     * @return
+     */
+    public static int getLabel()
+    {
+        return label; 
+    }
+
+    /**
+     * get the cohort for the channel. 
+     * @return
+     */
+    public static ArrayList<Map<String,Object>> getCohort()
+    {
+        return cohort; 
+    }
+
+    /**
+     * Get the senderID of the initiator of the transaction. 
+     * @return
+     */
+    public static String getSenderID()
+    {
+        return senderID; 
+    }
+
+    /**
+     * if local user was sender, get the receiver ID
+     * @return
+     */
+    public static String getReceiverID()
+    {
+        return receiverID; 
+    }
+//#endregion
+
+
 }
