@@ -127,9 +127,9 @@ public class Customer {
             if (command.equals("open "))
             {
                 String customer = parsedMessage[1]+" ";
-                setCustName(customer);
+                setCustName(parsedMessage[1]);
                 String arg2 = parsedMessage[2]+" ";
-                setBalance(Double.parseDouble(arg2));
+                setBalance(Double.parseDouble(parsedMessage[2]));
                 String ip4Adress = parsedMessage[3]+" ";
                 setCustIP(parsedMessage[3]);
                 String porta = parsedMessage[4]+" ";
@@ -335,14 +335,39 @@ public class Customer {
         System.out.println(ipString);
         System.out.println(port);
 
+        // create channel to store old cohort info 
+        ArrayList<Map<String,Object>> newCohort = deepCopy(cohort);
+        channel ch = new channel(getCustName(),newCohort);
+
+        sentChannels.put(customer+label, ch);
+
         // set new balance locally 
         setBalance(getBalance()-amount);
 
-        // create channel to store old cohort info 
-        channel ch = new channel(getCustName(),cohort);
-        sentChannels.put(customer+label, ch);
-        
-        sendMessage(ipString, port, "transfer "+amount+" "+label);
+
+
+        // update local cohort 
+        // Get old info for local user and update to put into new cohort 
+        System.out.println("New Info");
+        System.out.println("*********************************************");
+        for (Map<String,Object> member : cohort)
+        {
+            String name = (String) member.get("name");
+            if (name.equals(getCustName()) == true)
+            {
+                member.put("balance", getBalance());
+            }
+            
+        }
+
+        printCohort();
+
+        System.out.println("Old Info");
+        System.out.println("*********************************************");
+        //printMap(sentChannels);
+        channel test = sentChannels.get(customer+label);
+        test.printCohort();
+        sendMessage(ipString, port, "transfer "+amount+" "+label+" "+getCustName());
     }
 
     /***
@@ -805,6 +830,40 @@ public class Customer {
         cohort.add(customer3);
     }
 
+    /**
+     * Makes a deep copy of the Cohort recursively so that when changes are made to the original, no changes are made to the old database.
+     * this ensures that an earlier checkpoint can be recovered. 
+     * @param original
+     * @return
+     */
+    public static ArrayList<Map<String,Object>> deepCopy(ArrayList<Map<String,Object>> cohort) 
+    {
+        ArrayList<Map<String,Object>> newCohort = new ArrayList<>();
+    
+        // Iterate through all map items in the cohort 
+        for (Map<String,Object> map : cohort) 
+        {
+            // initialize each copy of the map object as new hashmap. 
+            Map<String,Object> newMap = new HashMap<>();
+    
+            // Iterate through every entry inside of the Map 
+            for (Map.Entry<String,Object> entry : map.entrySet()) 
+            {
+                // copy the contents into the newMap
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                newMap.put(key, value);
+            }
+            
+            // copy the new map into the cohort
+            newCohort.add(newMap);
+        }
+    
+        // This should make it now so that when changes are made to cohort the old values of the cohort will 
+        // be saved here and wont change. Hopefully. 
+        return newCohort;
+    }
+    
 //#endregion
 
 }
