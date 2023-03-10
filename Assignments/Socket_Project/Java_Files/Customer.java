@@ -831,7 +831,7 @@ public class Customer {
     }
 
     /**
-     * Makes a deep copy of the Cohort recursively so that when changes are made to the original, no changes are made to the old database.
+     * Makes a deep copy of the Cohort so that when changes are made to the original, no changes are made to the old database.
      * this ensures that an earlier checkpoint can be recovered. 
      * @param original
      * @return
