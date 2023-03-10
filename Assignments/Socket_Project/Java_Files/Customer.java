@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import org.omg.CORBA.Request;
-
 import java.io.Serializable; 
 
 public class Customer {
@@ -276,8 +273,8 @@ public class Customer {
             if (command.equals("listen-for-transfer "))
             {
                 System.out.println("Listening for a transfer at Port: "+getCustPort());
-                String request = " "; 
                 //String customer = parsedMessage[1]+" ";
+                String request = " ";
                 try
                 {
                     request = listen(customerIP, customerPort);
@@ -299,6 +296,9 @@ public class Customer {
                 if (operation.equals("transfer"))
                 {
                     System.out.println("Operation is a transfer");
+                    // Next step is to create a receive transfer function and 
+                    // re implement the tranfer to wait for a Success reply before closing/continuing
+                    receiveTransfer(); 
                 }
                 else
                 {
@@ -325,6 +325,18 @@ public class Customer {
             return false;
     }
     
+
+    public static void receiveTransfer()
+    {
+
+    }
+
+    /**
+     * Initiates a transfer between to clients in the cohort. 
+     * @param customer
+     * @param amount
+     * @param label
+     */
     public static void transfer(String customer, double amount, int label)
     {
         // get the Map object for customer transferring to 
