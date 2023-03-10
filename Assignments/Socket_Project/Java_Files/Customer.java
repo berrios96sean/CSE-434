@@ -10,7 +10,10 @@ import java.util.ArrayList;
 import java.util.List; 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner; 
+import java.util.Scanner;
+
+import org.omg.CORBA.Request;
+
 import java.io.Serializable; 
 
 public class Customer {
@@ -273,10 +276,11 @@ public class Customer {
             if (command.equals("listen-for-transfer "))
             {
                 System.out.println("Listening for a transfer at Port: "+getCustPort());
+                String request = " "; 
                 //String customer = parsedMessage[1]+" ";
                 try
                 {
-                    String request = listen(customerIP, customerPort);
+                    request = listen(customerIP, customerPort);
                     System.out.println(request);
 
                     //sendMessage(bankIpString, bankPortNum,message);
@@ -286,7 +290,20 @@ public class Customer {
                     e.printStackTrace();
                 }
                 
+                String[] parsedReq = request.split(" ");
+                String operation = parsedReq[0];
+                double amount = Double.parseDouble(parsedReq[1]);
+                int label = Integer.parseInt(parsedReq[2]);
+                String sender = parsedReq[3];
 
+                if (operation.equals("transfer"))
+                {
+                    System.out.println("Operation is a transfer");
+                }
+                else
+                {
+                    System.out.println("Operation not received");
+                }
                 return false;
             }
             if (command.equals("lost-transfer "))
