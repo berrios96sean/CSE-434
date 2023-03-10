@@ -833,7 +833,7 @@ public class Customer {
     /**
      * Makes a deep copy of the Cohort so that when changes are made to the original, no changes are made to the old database.
      * this ensures that an earlier checkpoint can be recovered. 
-     * @param original
+     * @param cohort
      * @return
      */
     public static ArrayList<Map<String,Object>> deepCopy(ArrayList<Map<String,Object>> cohort) 
