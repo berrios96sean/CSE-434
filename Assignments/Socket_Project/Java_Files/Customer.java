@@ -114,6 +114,9 @@ public class Customer {
      */
     public static boolean startApplication(String command, String message, boolean exitCustomer)
     {
+            String test = "tom1";
+            String xtest = test.substring(0, test.length()-1);
+            System.out.println(xtest);
             // Create a scanner to get the message for the command 
             Scanner scanner = new Scanner(System.in); 
             System.out.println("Please Enter a Command to Send to the Bank");
@@ -295,25 +298,43 @@ public class Customer {
                 String sender = parsedReq[3];
                 String ip = parsedReq[4]; 
                 int port = Integer.parseInt(parsedReq[5]);
-
+                double currentBalance = Double.parseDouble(parsedReq[6]);
                 
                 if (operation.equals("transfer"))
                 {
+                    // Set up a channell and store old cohort info here 
+                    receiveTransfer();
+                    // Update ammount from transfer in local cohort
                     deposit(amount);
                     System.out.println("Operation is a transfer");
                     
-                    Map<String,Object> temp = new HashMap<String,Object>(); 
+                    // Need to add an implementation where sender sends their current balance 
+                    // so that this can be updated accurately -- Added needs Testing 
+
+                    // Update current cohort info
                     for (Map<String,Object> member : cohort)
                     {
                         String name = (String) member.get("name");
                         if (name.equals(sender) == true)
                         {
-                            double balance = (double) member.get("balance");
-                            member.put("balance", balance-amount);
+                            member.put("balance", currentBalance);
                         }
                         
                     }
-                    printCohort();
+
+                    // get ip, port and name for other customer and send new arraylist to other members in the cohort
+                    for (Map<String,Object> member : cohort)
+                    {
+                        String name = (String) member.get("name");
+                        if (!name.equals(sender) && !name.equals(getCustName()))
+                        {
+                            sendPacketAsArrayList((String)member.get("ipv4_Address"), (int)member.get("portb"), cohort);
+                            System.out.println("Sent update Cohort");
+                        }
+                        
+                    }
+
+                    //printCohort();
                     sendPacketAsArrayList(ip, port, cohort);
                     recMessage(getCustIp(), getCustPort());
                     sendMessage(ip, port, "Transfer of $"+amount+" is Complete!");
@@ -343,7 +364,20 @@ public class Customer {
             {
                 createDummyCohort();
             }
-            
+            if (command.equals("recieve-new-cohort "))
+            {
+                try
+                {
+                    InetAddress addy = InetAddress.getByName(getCustIp());
+                    ArrayList<Map<String,Object>> newList = receiveList(addy, getCustPort());
+                    cohort = deepCopy(newList);
+                    System.out.println("Received array list");
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
             return false;
     }
     
@@ -419,7 +453,7 @@ public class Customer {
         //printMap(sentChannels);
         channel test = sentChannels.get(customer+label);
         test.printCohort();
-        sendMessage(ipString, port, "transfer "+amount+" "+label+" "+getCustName()+" "+getCustIp()+" "+getCustPort());
+        sendMessage(ipString, port, "transfer "+amount+" "+label+" "+getCustName()+" "+getCustIp()+" "+getCustPort()+" "+getBalance());
         ArrayList<Map<String,Object>> list = new ArrayList<Map<String,Object>>(); 
         try 
         {
@@ -1007,17 +1041,6 @@ public class Customer {
     
 //#endregion
 
-}
-
-class checkpoint
-{
-    /***
-     * Constructor for creating a checkpoing 
-     */
-    public checkpoint()
-    {
-
-    }
 }
 
 class channel
