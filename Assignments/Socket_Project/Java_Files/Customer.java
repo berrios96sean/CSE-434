@@ -277,6 +277,7 @@ public class Customer {
                 String request = " ";
                 try
                 {
+
                     request = listen(customerIP, customerPort);
                     System.out.println(request);
 
@@ -292,13 +293,33 @@ public class Customer {
                 double amount = Double.parseDouble(parsedReq[1]);
                 int label = Integer.parseInt(parsedReq[2]);
                 String sender = parsedReq[3];
+                String ip = parsedReq[4]; 
+                int port = Integer.parseInt(parsedReq[5]);
 
+                
                 if (operation.equals("transfer"))
                 {
+                    deposit(amount);
                     System.out.println("Operation is a transfer");
+                    
+                    Map<String,Object> temp = new HashMap<String,Object>(); 
+                    for (Map<String,Object> member : cohort)
+                    {
+                        String name = (String) member.get("name");
+                        if (name.equals(sender) == true)
+                        {
+                            double balance = (double) member.get("balance");
+                            member.put("balance", balance-amount);
+                        }
+                        
+                    }
+                    printCohort();
+                    sendPacketAsArrayList(ip, port, cohort);
+                    recMessage(getCustIp(), getCustPort());
+                    sendMessage(ip, port, "Transfer of $"+amount+" is Complete!");
                     // Next step is to create a receive transfer function and 
                     // re implement the tranfer to wait for a Success reply before closing/continuing
-                    receiveTransfer(); 
+                    //receiveTransfer(); 
                 }
                 else
                 {
@@ -322,13 +343,15 @@ public class Customer {
             {
                 createDummyCohort();
             }
+            
             return false;
     }
     
 
     public static void receiveTransfer()
     {
-
+        // implement to create channel an make an old copy of the cohort before continuing to 
+        // send and update current local cohort info. 
     }
 
     /**
@@ -361,8 +384,8 @@ public class Customer {
         // Get 
         String ipString = (String) receiver.get("ipv4_Address");
         int port = (int) receiver.get("portb");
-        System.out.println(ipString);
-        System.out.println(port);
+       // System.out.println(ipString);
+       // System.out.println(port);
 
         // create channel to store old cohort info 
         ArrayList<Map<String,Object>> newCohort = deepCopy(cohort);
@@ -377,8 +400,8 @@ public class Customer {
 
         // update local cohort 
         // Get old info for local user and update to put into new cohort 
-        System.out.println("New Info");
-        System.out.println("*********************************************");
+       // System.out.println("New Info");
+       // System.out.println("*********************************************");
         for (Map<String,Object> member : cohort)
         {
             String name = (String) member.get("name");
@@ -389,14 +412,29 @@ public class Customer {
             
         }
 
-        printCohort();
+       // printCohort();
 
-        System.out.println("Old Info");
-        System.out.println("*********************************************");
+       // System.out.println("Old Info");
+       // System.out.println("*********************************************");
         //printMap(sentChannels);
         channel test = sentChannels.get(customer+label);
         test.printCohort();
-        sendMessage(ipString, port, "transfer "+amount+" "+label+" "+getCustName());
+        sendMessage(ipString, port, "transfer "+amount+" "+label+" "+getCustName()+" "+getCustIp()+" "+getCustPort());
+        ArrayList<Map<String,Object>> list = new ArrayList<Map<String,Object>>(); 
+        try 
+        {
+             InetAddress addy = InetAddress.getByName(getCustIp());
+             list =  receiveList(addy, getCustPort());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        //System.out.println("TEST TEST TEST TEST TEST");
+        //printAList(list);
+        cohort = deepCopy(list);
+        sendMessage(ipString, port, "Received Array List");
+        recMessage(getCustIp(), getCustPort());
     }
 
     /***
@@ -601,6 +639,14 @@ public class Customer {
         }
     }
 
+    public static void printAList(ArrayList<Map<String,Object>> list)
+    {
+        for (Map<String,Object> lItem : list)
+        {
+            System.out.println(lItem.toString());
+        }
+    }
+
     /***
      * process a packer as a message prints received message to console 
      * @param packet
@@ -612,6 +658,34 @@ public class Customer {
         System.out.println("Received Message: "+message);
     }
 
+    /**
+     * Creating a new received message that is more intuitive. May delete the other one later 
+     * I just am not sure where it is being used at the moment. 
+     * @param ip
+     * @param port
+     */
+    public static void recMessage(String ip, int port)
+    {
+        try
+        {
+            InetAddress address = InetAddress.getByName(ip);
+            DatagramSocket socket = new DatagramSocket(port, address);
+    
+            byte[] buffer = new byte[1024];
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+            socket.receive(packet);
+
+            String message = new String(packet.getData(),0,packet.getLength());
+            System.out.println("Received Message: "+ message);
+            socket.close();
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
     /***
      * Receives a hashmap as a packet 
      * should update this implementation to take in a packet 
@@ -814,6 +888,15 @@ public class Customer {
         setBalance(prevBalance+amount);
         System.out.println("New Balance for Customer: "+getCustName()+" is now $"+getBalance());
 
+        for (Map<String,Object> member : cohort)
+        {
+            String name = (String) member.get("name");
+            if (name.equals(getCustName()) == true)
+            {
+                member.put("balance", getBalance());
+            }
+            
+        }
     }
 
     public static void withdrawl(double amount)
@@ -824,6 +907,15 @@ public class Customer {
         setBalance(prevBalance-amount);
         System.out.println("New Balance for Customer: "+getCustName()+" is now $"+getBalance());
 
+        for (Map<String,Object> member : cohort)
+        {
+            String name = (String) member.get("name");
+            if (name.equals(getCustName()) == true)
+            {
+                member.put("balance", getBalance());
+            }
+            
+        }
     }
 
     /***
@@ -859,6 +951,26 @@ public class Customer {
         cohort.add(customer3);
     }
 
+    public static void sendPacketAsArrayList(String ip, int port,ArrayList<Map<String,Object>> aListToSend)
+    {
+        try
+        {
+            InetAddress address = InetAddress.getByName(ip); 
+            DatagramSocket socket = new DatagramSocket();
+            ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+            ObjectOutputStream objOutput = new ObjectOutputStream(byteOutput);
+            objOutput.writeObject(aListToSend);
+            byte[] buffer = byteOutput.toByteArray(); 
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+            socket.send(packet);
+            socket.close();
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
     /**
      * Makes a deep copy of the Cohort so that when changes are made to the original, no changes are made to the old database.
      * this ensures that an earlier checkpoint can be recovered. 
