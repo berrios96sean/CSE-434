@@ -1,6 +1,8 @@
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.util.HashMap;
@@ -173,7 +175,27 @@ public class Bank {
                     System.out.println("COHORT MAP: ");
                     printCohortMap();
                 }
-                
+                if (command.equals("receive-checkpoint"))
+                {
+                    ArrayList<Map<String,Object>> tempList = new ArrayList<Map<String,Object>>();
+                    String customer = parsedMessage[1]; 
+                    System.out.println("Received a checkpoint from "+customer);
+                    DatagramPacket packet2 = new DatagramPacket(new byte[1024],1024);
+                    socket.receive(packet2);
+
+                    byte[] listData = packet2.getData();
+                    ByteArrayInputStream byteInput = new ByteArrayInputStream(listData);
+                    ObjectInputStream objInput = new ObjectInputStream(byteInput);
+                    tempList = (ArrayList<Map<String,Object>>) objInput.readObject();
+
+                    ArrayList<Map<String,Object>> origList = getCohortList(customer);
+                    printAList(origList);
+                    updateCohortList(customer, tempList);
+                    printAList(tempList);
+                    ArrayList<Map<String,Object>> testList = getCohortList(customer);
+                    printAList(testList);
+                    cohorts.put(customer, tempList);
+                }
             }
             socket.close();
         }
@@ -504,7 +526,12 @@ public class Bank {
             List<Map<String,Object>> cohortList = listEntry.getValue();
             for (Map<String,Object> cust : cohortList)
             {
-                tempList = new ArrayList<>(cohortList);
+                String name = (String) cust.get("name");
+                if (name.equals(customer))
+                {
+                    tempList = new ArrayList<>(cohortList);
+                }
+
                 break; 
             }
             if (tempList != null)
@@ -513,6 +540,27 @@ public class Bank {
             }
         }
         return tempList; 
+    }
+
+    public static void updateCohortList(String customer, ArrayList<Map<String,Object>> list)
+    {
+        
+        for (Map.Entry<String,List<Map<String,Object>>> listEntry : cohorts.entrySet())
+        {
+            List<Map<String,Object>> cohortList = listEntry.getValue();
+            for (Map<String,Object> cust : cohortList)
+            {
+                String name = (String) cust.get("name");
+                if (name.equals(customer))
+                {
+                    System.out.println("Updating .... ");
+                    cohortList = list;
+                }
+                
+                
+            }
+        }
+
     }
     
 //#endregion
@@ -627,6 +675,78 @@ public class Bank {
         }
 
         return -1;
+    }
+
+    /**
+     * 
+     * @param ip
+     * @param port
+     * @return
+     */
+    public static ArrayList<Map<String,Object>> receiveList(InetAddress ip, int port)
+    {
+        ArrayList<Map<String,Object>> tempList = null; 
+        try
+        {
+            DatagramSocket socket = new DatagramSocket(port, ip);
+            DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
+            socket.receive(packet);
+
+            byte[] listData = packet.getData();
+            ByteArrayInputStream byteInput = new ByteArrayInputStream(listData);
+            ObjectInputStream objInput = new ObjectInputStream(byteInput);
+            tempList = (ArrayList<Map<String,Object>>) objInput.readObject();
+
+            socket.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace(); 
+        }
+
+        return tempList; 
+    }
+
+        /**
+     * Makes a deep copy of the Cohort so that when changes are made to the original, no changes are made to the old database.
+     * this ensures that an earlier checkpoint can be recovered. 
+     * @param cohort
+     * @return
+     */
+    public static ArrayList<Map<String,Object>> deepCopy(ArrayList<Map<String,Object>> cohort) 
+    {
+        ArrayList<Map<String,Object>> newCohort = new ArrayList<>();
+    
+        // Iterate through all map items in the cohort 
+        for (Map<String,Object> map : cohort) 
+        {
+            // initialize each copy of the map object as new hashmap. 
+            Map<String,Object> newMap = new HashMap<>();
+    
+            // Iterate through every entry inside of the Map 
+            for (Map.Entry<String,Object> entry : map.entrySet()) 
+            {
+                // copy the contents into the newMap
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                newMap.put(key, value);
+            }
+            
+            // copy the new map into the cohort
+            newCohort.add(newMap);
+        }
+    
+        // This should make it now so that when changes are made to cohort the old values of the cohort will 
+        // be saved here and wont change. Hopefully. 
+        return newCohort;
+    }
+    
+    public static void printAList(ArrayList<Map<String,Object>> list)
+    {
+        for (Map<String,Object> lItem : list)
+        {
+            System.out.println(lItem.toString());
+        }
     }
 
 //#endregion

@@ -378,10 +378,67 @@ public class Customer {
                     e.printStackTrace();
                 }
             }
+            if (command.equals("checkpoint "))
+            {
+                // Iterate through each member and get ip name and port. 
+                ArrayList<String> ips = new ArrayList<String>();
+                ArrayList<Integer> ports = new ArrayList<Integer>(); 
+                for (Map<String,Object> member : cohort)
+                {
+                    String name = (String) member.get("name");
+                    if (!name.equals(getCustName()))
+                    {
+                        ips.add((String)member.get("ipv4_Address"));
+                        ports.add((int)member.get("portb"));
+                    }
+                    
+                }
+                try
+                {
+                    InetAddress addy1 = InetAddress.getByName(getCustIp());
+                    System.out.println("Waiting for list from: "+ips.get(0));
+                    ArrayList<Map<String,Object>> l1 = receiveList(addy1, getCustPort());
+                    printAList(l1);
+                    System.out.println("Received list from: "+ips.get(0));
+                    System.out.println("Waiting for list from: "+ips.get(1));
+                    ArrayList<Map<String,Object>> l2 = receiveList(addy1, getCustPort());
+                    printAList(l2);
+                    System.out.println("Received list from: "+ips.get(1));
+
+                    if (l1.equals(cohort) && l2.equals(l1))
+                    {
+                        System.out.println("Checkpoint is Successfull send updated Info to the Bank!");
+                    }
+                    else
+                    {
+                        System.out.println("Checkpoint was unsuccessfull, Rollback is required");
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } 
+            if (command.equals("send-checkpoint "))
+            {
+                String ip = parsedMessage[1];
+                int port = Integer.parseInt(parsedMessage[2]);
+                sendPacketAsArrayList(ip, port, cohort);
+            }      
+            if (command.equals("send-to-bank "))
+            {
+                sendMessage(bankIpString, bankPortNum, "receive-checkpoint "+getCustName());
+                sendPacketAsArrayList(bankIpString, bankPortNum, cohort);
+            }   
             return false;
     }
     
+    public static void rollback()
+    {
 
+    }
+    
     public static void receiveTransfer()
     {
         // implement to create channel an make an old copy of the cohort before continuing to 
