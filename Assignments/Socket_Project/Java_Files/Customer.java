@@ -114,9 +114,7 @@ public class Customer {
      */
     public static boolean startApplication(String command, String message, boolean exitCustomer)
     {
-            String test = "tom1";
-            String xtest = test.substring(0, test.length()-1);
-            System.out.println(xtest);
+
             // Create a scanner to get the message for the command 
             Scanner scanner = new Scanner(System.in); 
             System.out.println("Please Enter a Command to Send to the Bank");
@@ -350,7 +348,67 @@ public class Customer {
             }
             if (command.equals("lost-transfer "))
             {
-                System.out.println("Place holder for lost-transfer");
+                System.out.println("Listening for a transfer at Port: "+getCustPort());
+                //String customer = parsedMessage[1]+" ";
+                String request = " ";
+                try
+                {
+
+                    request = listen(customerIP, customerPort);
+                    System.out.println(request);
+
+                    //sendMessage(bankIpString, bankPortNum,message);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                
+                String[] parsedReq = request.split(" ");
+                String operation = parsedReq[0];
+                double amount = Double.parseDouble(parsedReq[1]);
+                int label = Integer.parseInt(parsedReq[2]);
+                String sender = parsedReq[3];
+                String ip = parsedReq[4]; 
+                int port = Integer.parseInt(parsedReq[5]);
+                double currentBalance = Double.parseDouble(parsedReq[6]);
+                
+                if (operation.equals("transfer"))
+                {
+                    // Set up a channell and store old cohort info here 
+                    receiveTransfer();
+                    // Update ammount from transfer in local cohort
+                    deposit(amount);
+                    System.out.println("Operation is a transfer");
+                    
+                    // Need to add an implementation where sender sends their current balance 
+                    // so that this can be updated accurately -- Added needs Testing 
+
+                    // Update current cohort info
+                    for (Map<String,Object> member : cohort)
+                    {
+                        String name = (String) member.get("name");
+                        if (name.equals(sender) == true)
+                        {
+                            member.put("balance", currentBalance);
+                        }
+                        
+                    }
+
+
+                    //printCohort();
+                    sendPacketAsArrayList(ip, port, cohort);
+                    recMessage(getCustIp(), getCustPort());
+                    sendMessage(ip, port, "Transfer of $"+amount+" is Complete!");
+                    // Next step is to create a receive transfer function and 
+                    // re implement the tranfer to wait for a Success reply before closing/continuing
+                    //receiveTransfer(); 
+                }
+                else
+                {
+                    System.out.println("Operation not received");
+                }
+                return false;
             }
             if (command.equals("checkpoint "))
             {
@@ -359,6 +417,28 @@ public class Customer {
             if (command.equals("rollback "))
             {
                 System.out.println("Place holder for rollback");
+                // recieve a cohort from the bank and deep copy it into the cohort. 
+                try
+                {
+                    InetAddress custAddy = InetAddress.getByName(getCustIp());
+                    sendMessage(bankIpString, bankPortNum, "rollback "+getCustIp()+" "+getCustPort()+" "+getCustName());
+                    ArrayList<Map<String,Object>> newList = receiveList(custAddy, getCustPort());
+                    for (Map<String,Object> cust : newList)
+                    {
+                        String name = (String) cust.get("name");
+                        if (name.equals(getCustName()))
+                        {
+                            setBalance((double)cust.get("balance"));
+                        }
+                    }
+                    
+                    cohort = deepCopy(newList);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                
             }
             if (command.equals("create-dummy "))
             {
@@ -438,7 +518,7 @@ public class Customer {
     {
 
     }
-    
+
     public static void receiveTransfer()
     {
         // implement to create channel an make an old copy of the cohort before continuing to 

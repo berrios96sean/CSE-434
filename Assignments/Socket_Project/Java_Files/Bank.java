@@ -188,13 +188,36 @@ public class Bank {
                     ObjectInputStream objInput = new ObjectInputStream(byteInput);
                     tempList = (ArrayList<Map<String,Object>>) objInput.readObject();
 
-                    ArrayList<Map<String,Object>> origList = getCohortList(customer);
-                    printAList(origList);
+                   // ArrayList<Map<String,Object>> origList = getCohortList(customer);
+                   // printAList(origList);
                     updateCohortList(customer, tempList);
-                    printAList(tempList);
-                    ArrayList<Map<String,Object>> testList = getCohortList(customer);
-                    printAList(testList);
-                    cohorts.put(customer, tempList);
+                   // printAList(tempList);
+                   // ArrayList<Map<String,Object>> testList = getCohortList(customer);
+                   // printAList(testList);
+                   // cohorts.put(customer, tempList);
+                   // next i need to update the customer info 
+                   // get the cohort list from updated info then iterate through 
+                   // replace balance of all customer in Customers list with same name in list 
+
+                   ArrayList<Map<String,Object>> updatedList = getCohortList(customer);
+
+                   for (Map<String,Object> cust : tempList)
+                   {
+                        String name = (String) cust.get("name");
+                        double balance = (double) cust.get("balance");
+
+                        Map<String,Object> temp = customers.get(name);
+                        temp.put("balance", balance);
+                   }
+                }
+                if (command.equals("rollback"))
+                {
+                    String custIP = parsedMessage[1];
+                    InetAddress custAddress = InetAddress.getByName(custIP);
+                    int custPort = Integer.parseInt(parsedMessage[2]);
+                    String custName = parsedMessage[3]; 
+                    System.out.println("|"+custName+"|");
+                    sendPacketAsArrayList(custAddress, custPort, custName);
                 }
             }
             socket.close();
@@ -532,7 +555,6 @@ public class Bank {
                     tempList = new ArrayList<>(cohortList);
                 }
 
-                break; 
             }
             if (tempList != null)
             {
@@ -554,7 +576,8 @@ public class Bank {
                 if (name.equals(customer))
                 {
                     System.out.println("Updating .... ");
-                    cohortList = list;
+                    cohorts.put(listEntry.getKey(), list);
+                    System.out.println("Update Complete!");
                 }
                 
                 
