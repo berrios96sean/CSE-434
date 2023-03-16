@@ -31,7 +31,11 @@ public class Bank {
 
 //#region Main Function 
 
-    // Need to clean this up at some point so that code is not cluttered inside main function 
+    /**
+     * The purpose of this main is to start the Bank process to listen at a specific ip and port. If these things are not specified in 
+     * the command line the Bank process will not start. 
+     * @param args
+     */
     public static void main(String[] args) 
     {
         //Initializing the bank command so that I can set parameters for Bank Ip and Port Number 
@@ -77,7 +81,6 @@ public class Bank {
 	        int port = bankPortNum; 
             DatagramSocket socket = new DatagramSocket(port, address);
            
-	        String ip = address.getHostAddress();  
             // Listen for incoming messages 
             byte[] buffer = new byte[1024];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
@@ -93,7 +96,6 @@ public class Bank {
                 String command = parsedMessage[0];
                 if (command.equals("open"))
                 {
-                    System.out.println("OPEN");
                     String customer = parsedMessage[1];
                     double balance = Double.parseDouble(parsedMessage[2]);
                     String ip4 = parsedMessage[3];
@@ -102,28 +104,15 @@ public class Bank {
                     String result = open(customer,balance,ip4,porta,portb);
                     
                     sendPacketAsMessage(portb, ip4, result);
-
-                    // Test sending a hashmap as a packet -- delete or comment out this is not needed 
-                    //ByteArrayOutputStream byteArray = new ByteArrayOutputStream(); 
-                    //ObjectOutputStream objOutput = new ObjectOutputStream(byteArray);
-                    //objOutput.writeObject(customers);
-                    //byte[] mapData = byteArray.toByteArray();
-                    //custPacket = new DatagramPacket(mapData,mapData.length, custAddress,custPort);
-                    //customerSocket.send(custPacket);
-                    
-                    //customerSocket.close(); 
                 }
                 if (command.equals("new-cohort"))
                 {
-                    System.out.println("NEW-COHORT");
                     String customer = parsedMessage[1];
                     int portCustomer = Integer.parseInt(parsedMessage[2]);
                     String result = makeCohort(customer, portCustomer);
                     String ipAddress = getCustomrIP(customer);
                     InetAddress addy = InetAddress.getByName(ipAddress);
-                    System.out.println("Customer IP is: "+ipAddress);
                     int portNumber = getCustomrPort(customer);
-                    System.out.println("port: "+portNumber);
                     sendPacketAsMessage(portNumber, ipAddress, result);
                     // Send cohort as Arraylist 
                     sendPacketAsArrayList(addy, portNumber, customer);
@@ -141,11 +130,7 @@ public class Bank {
                 }
                 if (command.equals("exit"))
                 {
-                    System.out.println("EXIT");
                     String customer = parsedMessage[1];
-                    System.out.println(customer);
-                    //printCustomerMap();
-
                     // rick is just a placeholder name, it is not significant 
                     Map<String,Object> rick = customers.get(customer);
                     if (rick == null)
@@ -155,10 +140,6 @@ public class Bank {
                     String cIP = (String) rick.get("ipv4_Address");
                     int cPort = (int) rick.get("portb");
                     String response = deleteCustomer(customer);
-                    //String cIP = getCustomrIP(customer);
-                    //System.out.println(cIP);
-                    //int cPort = getCustomrPort(customer);
-                    //System.out.println(cPort);
                     sendPacketAsMessage(cPort, cIP, response);
                 }
                 // This command will be to close the bank service with a call from the customer 'close-bank'
@@ -188,27 +169,17 @@ public class Bank {
                     ObjectInputStream objInput = new ObjectInputStream(byteInput);
                     tempList = (ArrayList<Map<String,Object>>) objInput.readObject();
 
-                   // ArrayList<Map<String,Object>> origList = getCohortList(customer);
-                   // printAList(origList);
                     updateCohortList(customer, tempList);
-                   // printAList(tempList);
-                   // ArrayList<Map<String,Object>> testList = getCohortList(customer);
-                   // printAList(testList);
-                   // cohorts.put(customer, tempList);
-                   // next i need to update the customer info 
-                   // get the cohort list from updated info then iterate through 
-                   // replace balance of all customer in Customers list with same name in list 
+                    ArrayList<Map<String,Object>> updatedList = getCohortList(customer);
 
-                   ArrayList<Map<String,Object>> updatedList = getCohortList(customer);
+                    for (Map<String,Object> cust : tempList)
+                    {
+                            String name = (String) cust.get("name");
+                            double balance = (double) cust.get("balance");
 
-                   for (Map<String,Object> cust : tempList)
-                   {
-                        String name = (String) cust.get("name");
-                        double balance = (double) cust.get("balance");
-
-                        Map<String,Object> temp = customers.get(name);
-                        temp.put("balance", balance);
-                   }
+                            Map<String,Object> temp = customers.get(name);
+                            temp.put("balance", balance);
+                    }
                 }
                 if (command.equals("rollback"))
                 {
@@ -231,9 +202,9 @@ public class Bank {
     /***
      * Deletes cohorts in all customer processes in the cohort does not delete the cohort from 
      * the Bank 
-     * @param customer
-     * @param bankSocket
-     * @return
+     * @param customer customer name to get the correct cohort 
+     * @param bankSocket pass in the current socket, since bank should already be listening continuosly 
+     * @return 
      */
     // Delete cohort method 
     public static String deleteCohort(String customer, DatagramSocket bankSocket)
@@ -249,6 +220,7 @@ public class Bank {
             try
             {
                 String ipAddy = (String) member.get("ipv4_Address");
+                System.out.println("IP = "+ipAddy);
                 int port = (int) member.get("portb");
                 DatagramSocket socket = new DatagramSocket();
                 InetAddress address = InetAddress.getByName(ipAddy); 
@@ -285,7 +257,7 @@ public class Bank {
     /***
      * this method deletes the cohort from the bank. Seperating to make calls seperate from each other 
      * to help with troubleshooting 
-     * @param customerName
+     * @param customerName customer name to get the correct cohort 
      */
     public static void deleteCohort2(String customerName) 
     {
@@ -305,8 +277,8 @@ public class Bank {
 
     /***
      * listen at ip and port 
-     * @param ip
-     * @param port
+     * @param ip pass in as an InetAddress
+     * @param port port number passed in as int. 
      * @return
      */
     public static String listen(InetAddress ip,int port)
@@ -341,9 +313,9 @@ public class Bank {
 
     /***
      * sends a packet as a message 
-     * @param port
-     * @param ip
-     * @param result
+     * @param port passed in as an int
+     * @param ip passed in as a string
+     * @param result this is the message that is being send pass in as a string 
      */
     // Sends a packer as a message that can be printed to terminal 
     public static void sendPacketAsMessage(int port, String ip, String result)
@@ -374,12 +346,10 @@ public class Bank {
 
     /***
      * makes a cohort of n customers for the bank 
-     * @param customer
-     * @param sizeOfCohort
+     * @param customer name of customer initiating cohort
+     * @param sizeOfCohort size or ammount of people to add into the cohort as int
      * @return
      */
-    // Return a string for the result of the operation
-    // minimum cohort size is greater than or equal to two
     public static String makeCohort(String customer, int sizeOfCohort)
     {
         // Determine if a failure should occur 
@@ -431,14 +401,14 @@ public class Bank {
                 {
                     return "Failure: selected customer null";
                 }
-                System.out.println(selectedCustomer.get("in_Cohort"));
+                //System.out.println(selectedCustomer.get("in_Cohort"));
                 // Check that selected customer wasn't already added and that they are not already assigned to a cohort 
                 if (!cohortList.contains(selectedCustomer) && !(Boolean) selectedCustomer.get("in_Cohort"))
                 {
                     cohortList.add(selectedCustomer);
                     remainingCustomers.remove(i);
                     selectedCustomer.put("in_Cohort",true);
-                    System.out.println("TEST");
+                    //System.out.println("TEST");
                 }
 
             }
@@ -460,10 +430,9 @@ public class Bank {
      * Could look into furthering implementation to delete only this customer from the cohort 
      * and checking size of remaining customers in cohort to determine if entire cohort should 
      * be deleted. 
-     * @param customer
+     * @param customer customer in cohort or customer maps. 
      * @return
      */
-    // Return a string for the result of the operation 
     public static String deleteCustomer(String customer)
     {
         // Lock data structure 
@@ -481,11 +450,11 @@ public class Bank {
 
     /***
      * opens an account for a customer 
-     * @param customerName
-     * @param balance
-     * @param ipv4Address
-     * @param porta
-     * @param portb
+     * @param customerName customer name to add to database
+     * @param balance balance to add in the database
+     * @param ipv4Address ip address for the customer as a string to add in the database
+     * @param porta port number for the bank 
+     * @param portb port number for the customer
      * @return
      */
     // This function processes an open command and returns the result to the customer. 
@@ -513,9 +482,8 @@ public class Bank {
     }
 
     /***
-     * prints the customers in the bank, used for testing 
+     * prints the customers in the bank, used for testing using Test command from customer 
      */
-    // This function is used for testing so that I can verify the contents of the hashmap
     public static void printCustomerMap()
     {
         for (String key : customers.keySet())
@@ -525,7 +493,7 @@ public class Bank {
     }
     
     /***
-     * prints the cohorts in the bank used for testing 
+     * prints the cohorts in the bank used for testing using Test command from customer 
      */
     // This function is used for testing so that I can verify the contents of the hashmap
     public static void printCohortMap()
@@ -538,8 +506,8 @@ public class Bank {
 
     /***
      * Itererates through list of cohorts and gets the cohort for any customer that is assigned to the cohort returns as arraylist
-     * @param customer
-     * @return
+     * @param customer customer in the hashmap of the list
+     * @return Arraylist of a cohort 
      */
     public static ArrayList<Map<String,Object>> getCohortList(String customer)
     {
@@ -564,6 +532,11 @@ public class Bank {
         return tempList; 
     }
 
+    /**
+     * Updates the banks cohort with new information when a checkpoint happens to use the Bank as a global database
+     * @param customer customer within the cohort hashmap of the arraylist 
+     * @param list the new array list containing the new cohort information 
+     */
     public static void updateCohortList(String customer, ArrayList<Map<String,Object>> list)
     {
         
@@ -592,10 +565,9 @@ public class Bank {
 
     /***
      * sends a packet as an array list 
-     * should add implementation to take in a packet 
-     * @param ip
-     * @param port
-     * @param customer
+     * @param ip ip as an inetaddress
+     * @param port port number as an int 
+     * @param customer customer name to send to, will get the cohort as an Array list to send for any customer in the list
      */
     public static void sendPacketAsArrayList(InetAddress ip, int port,String customer)
     {
@@ -619,10 +591,10 @@ public class Bank {
     }
 
     /***
-     * 
-     * @param ip
-     * @param port
-     * @param customer
+     * This is basically the same as sending a packet as an array list but can be used to send to others in a cohort.  
+     * @param ip ip as an inet address
+     * @param port port as an int
+     * @param customer customer in the cohort for the list to send 
      */
     public static void sendPacketForCohort(InetAddress ip, int port,String customer)
     {
@@ -646,9 +618,9 @@ public class Bank {
     }
 
     /***
-     * 
-     * @param customer
-     * @return
+     * get the customer ip of a specific customer in the customers map 
+     * @param customer customer name as a string 
+     * @return customers IP as a string 
      */
     public static String getCustomrIP(String customer)
     {
@@ -667,9 +639,9 @@ public class Bank {
     }
 
     /***
-     * 
-     * @param customer
-     * @return
+     * get the customers port for specific customer in the customers map 
+     * @param customer customer name 
+     * @return customer port as an int
      */
     public static int getCustomrPort(String customer)
     {
@@ -684,9 +656,10 @@ public class Bank {
     }
 
     /***
-     * 
-     * @param customer
-     * @return
+     * get the banks port number not sure why I made this, the bank has a local variable to store this. However this can be used to test 
+     * in the event of a communication error that the customer has the correct port number for the bank 
+     * @param customer customer name in the customers map 
+     * @return bank port number as an int 
      */
     public static int getBankPort(String customer)
     {
@@ -701,10 +674,10 @@ public class Bank {
     }
 
     /**
-     * 
-     * @param ip
-     * @param port
-     * @return
+     * Receives an arraylist as a message. Can store as another arraylist. 
+     * @param ip ip to listen to should be your own 
+     * @param port port to listen to should be your own 
+     * @return arraylist of a cohort 
      */
     public static ArrayList<Map<String,Object>> receiveList(InetAddress ip, int port)
     {
@@ -730,11 +703,13 @@ public class Bank {
         return tempList; 
     }
 
-        /**
+    /**
      * Makes a deep copy of the Cohort so that when changes are made to the original, no changes are made to the old database.
-     * this ensures that an earlier checkpoint can be recovered. 
-     * @param cohort
-     * @return
+     * this ensures that an earlier checkpoint can be recovered. Not sure this is needed anymore, used this when storing old 
+     * cohorts in the chanell objects for the customer. It can still be useful anytime you will need a list to not change when 
+     * changes are made to the original since hashmaps are used within the list those need to be deep copied. 
+     * @param cohort arraylist as a cohort that points to the original 
+     * @return deep copied arraylist 
      */
     public static ArrayList<Map<String,Object>> deepCopy(ArrayList<Map<String,Object>> cohort) 
     {
@@ -764,6 +739,10 @@ public class Bank {
         return newCohort;
     }
     
+    /**
+     * this function is useful because you can pass in an arraylist and print the contents of it for testing purposes 
+     * @param list array list to print must be arraylist<map<string,object>> 
+     */
     public static void printAList(ArrayList<Map<String,Object>> list)
     {
         for (Map<String,Object> lItem : list)
