@@ -518,16 +518,6 @@ public class Customer {
             return false;
     }
     
-    public static void rollback()
-    {
-
-    }
-
-    public static void receiveTransfer()
-    {
-        // implement to create channel an make an old copy of the cohort before continuing to 
-        // send and update current local cohort info. 
-    }
 
     /**
      * Initiates a transfer between to clients in the cohort. 
@@ -814,10 +804,6 @@ public class Customer {
         }
     }
 
-    
-    /** 
-     * @param list
-     */
     public static void printAList(ArrayList<Map<String,Object>> list)
     {
         for (Map<String,Object> lItem : list)
