@@ -3,7 +3,7 @@
 ## Socket Project 
 The socket project was split into two section, a Milestone and full implementation. 
 
-To see each you can follow the links to the youtube videos below
+To see each you can follow the links to the youtube videos below<br/>
 [milestone](https://www.youtube.com/watch?v=ixCxLqumfCM)<br/>
 [full project](https://www.youtube.com/watch?v=FPwbjz2o0sU&t=362s)<br/>
  
